@@ -32,6 +32,7 @@
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #0B0F19; }
         ::-webkit-scrollbar-thumb { background: #1F2937; border-radius: 4px; }
+        
         .wheel-pointer {
             width: 0; height: 0; 
             border-left: 15px solid transparent;
@@ -43,7 +44,7 @@
 </head>
 <body class="text-slate-100 min-h-screen flex flex-col justify-between selection:bg-cyan-500 selection:text-black">
 
-    <!-- Toast Container -->
+    <!-- Toast Notification Container -->
     <div id="toast-container" class="fixed top-5 right-5 z-50 flex flex-col gap-2"></div>
 
     <!-- MAIN NAVBAR -->
@@ -55,8 +56,8 @@
                     <i id="brand-icon" class="fa-solid fa-gamepad"></i>
                 </div>
                 <div>
-                    <h1 id="brand-name" class="font-bold text-lg text-white leading-none tracking-wider">IJERDID SHOP</h1>
-                    <p id="brand-tagline" class="text-xs text-cyan-400">FREEFIRE & CASINO PLATFORM</p>
+                    <h1 id="brand-name" class="font-bold text-lg text-white leading-none tracking-wider">IJERDID PLATFORM</h1>
+                    <p id="brand-tagline" class="text-xs text-cyan-400">GACHA & CASINO PLATFORM</p>
                 </div>
             </div>
 
@@ -69,7 +70,7 @@
                     <span class="text-xs text-slate-400">P</span>
                 </div>
 
-                <!-- Quick Toggle Music Button -->
+                <!-- Quick Music Control -->
                 <button onclick="toggleMusicPlay()" class="hidden sm:flex items-center gap-2 bg-purple-600/20 border border-purple-500/30 px-3.5 py-1.5 rounded-full text-purple-300 hover:bg-purple-600/30 text-xs transition">
                     <i id="nav-music-icon" class="fa-solid fa-music"></i>
                     <span id="music-status-text">เปิดเพลง</span>
@@ -86,17 +87,18 @@
         </div>
     </nav>
 
-    <!-- HTML AUDIO TAG (ใส่เพลงตรงนี้) -->
-    <audio id="bg-audio" loop></audio>
+    <!-- Hidden YouTube Audio Player Container -->
+    <div id="youtube-player-container" class="hidden"></div>
 
     <!-- ================================================================= -->
-    <!-- VIEW 1: CLIENT WEBSITE -->
+    <!-- VIEW 1: CLIENT WEBSITE (หน้าบ้านสำหรับลูกค้า) -->
     <!-- ================================================================= -->
     <div id="view-client" class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 space-y-8">
+        
         <!-- Announcement Bar -->
         <div class="bg-gradient-to-r from-purple-900/40 via-cyan-900/40 to-purple-900/40 border border-cyan-500/30 p-3.5 rounded-2xl flex items-center gap-3">
             <span class="bg-cyan-500 text-slate-950 font-bold text-xs px-2.5 py-1 rounded-lg">ประกาศ</span>
-            <marquee id="client-announcement" class="text-xs sm:text-sm text-cyan-200">ยินดีต้อนรับสู่ระบบเว็บสุ่มไอเทม FreeFire และคาสิโนบาคาร่าออนไลน์ สมัครสมาชิกรับเครดิตฟรีเริ่มต้น!</marquee>
+            <marquee id="client-announcement" class="text-xs sm:text-sm text-cyan-200">ยินดีต้อนรับสู่ระบบเว็บสุ่มรางวัลและคาสิโนบาคาร่าออนไลน์ สมัครสมาชิกรับเครดิตฟรีเริ่มต้น!</marquee>
         </div>
 
         <!-- Hero Banner & Music Player Widget -->
@@ -105,7 +107,7 @@
                 <img id="hero-banner-img" src="https://images.unsplash.com/photo-1542751371-adc38448a05e?w=1000&auto=format&fit=crop&q=80" class="w-full h-full object-cover">
                 <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent flex flex-col justify-end p-6">
                     <h2 id="hero-banner-title" class="text-xl sm:text-2xl font-bold text-white">วงล้อกาชาปอง UR & มินิเกมบาคาร่าสุดมันส์</h2>
-                    <p class="text-xs sm:text-sm text-slate-300 mt-1">ล็อกอินแล้วร่วมสนุก ลุ้นรับไอเทมเกมสุดคุ้มได้ทันที</p>
+                    <p class="text-xs sm:text-sm text-slate-300 mt-1">ล็อกอินแล้วร่วมสนุก ลุ้นรับรางวัลใหญ่ได้ทันที</p>
                 </div>
             </div>
 
@@ -114,14 +116,14 @@
                 <div>
                     <h3 class="font-bold text-white flex items-center gap-2">
                         <i id="music-disc-icon" class="fa-solid fa-compact-disc text-cyan-400"></i>
-                        <span>เครื่องเล่นเพลงประจำเว็บ</span>
+                        <span>เครื่องเล่นเพลง YouTube ประจำเว็บ</span>
                     </h3>
                     <div class="mt-4 bg-slate-950 p-4 rounded-2xl border border-slate-800 flex items-center gap-4">
                         <div class="w-12 h-12 rounded-xl bg-purple-600/20 border border-purple-500/40 flex items-center justify-center text-purple-400 text-xl">
                             <i class="fa-solid fa-music"></i>
                         </div>
                         <div class="overflow-hidden flex-1">
-                            <h4 id="current-song-title" class="text-sm font-semibold text-white truncate">EDM Cyberpunk Beats</h4>
+                            <h4 id="current-song-title" class="text-sm font-semibold text-white truncate">ยังไม่มีเพลงในระบบ</h4>
                             <p id="current-song-status" class="text-xs text-slate-400">กดปุ่มเล่นเพื่อฟังเพลง</p>
                         </div>
                     </div>
@@ -138,22 +140,16 @@
         <!-- Tabs Nav -->
         <div class="space-y-6">
             <div class="flex items-center gap-3 border-b border-slate-800 pb-3 overflow-x-auto">
-                <button onclick="switchClientTab('shop')" id="client-tab-shop" class="px-5 py-2.5 rounded-xl font-bold text-sm bg-cyan-500 text-slate-950 transition whitespace-nowrap">
-                    <i class="fa-solid fa-store mr-1.5"></i> ร้านค้าไอเทม
-                </button>
-                <button onclick="switchClientTab('gacha')" id="client-tab-gacha" class="px-5 py-2.5 rounded-xl font-bold text-sm text-slate-400 hover:text-white transition whitespace-nowrap">
-                    <i class="fa-solid fa-dharmachakra text-purple-400 mr-1.5"></i> วงล้อกาชา (Gacha)
+                <button onclick="switchClientTab('gacha')" id="client-tab-gacha" class="px-5 py-2.5 rounded-xl font-bold text-sm bg-cyan-500 text-slate-950 transition whitespace-nowrap">
+                    <i class="fa-solid fa-dharmachakra text-purple-950 mr-1.5"></i> วงล้อกาชา (Gacha)
                 </button>
                 <button onclick="switchClientTab('baccarat')" id="client-tab-baccarat" class="px-5 py-2.5 rounded-xl font-bold text-sm text-slate-400 hover:text-white transition whitespace-nowrap">
                     <i class="fa-solid fa-dice text-amber-400 mr-1.5"></i> บาคาร่าออนไลน์
                 </button>
             </div>
 
-            <!-- TAB 1: SHOP -->
-            <div id="client-sec-shop" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
-
-            <!-- TAB 2: GACHA WHEEL -->
-            <div id="client-sec-gacha" class="hidden bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 space-y-6">
+            <!-- TAB 1: GACHA WHEEL -->
+            <div id="client-sec-gacha" class="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 space-y-6">
                 <div class="text-center max-w-lg mx-auto">
                     <span class="px-3 py-1 rounded-full bg-purple-500/10 text-purple-400 border border-purple-500/30 text-xs font-bold">LUCKY GACHA WHEEL</span>
                     <h3 class="text-2xl font-bold text-white mt-2">วงล้อสุ่มกาชาปอง</h3>
@@ -181,7 +177,7 @@
                 </div>
             </div>
 
-            <!-- TAB 3: BACCARAT -->
+            <!-- TAB 2: BACCARAT -->
             <div id="client-sec-baccarat" class="hidden bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 space-y-6">
                 <div class="text-center max-w-lg mx-auto">
                     <span class="px-3 py-1 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/30 text-xs font-bold">CASINO GAME</span>
@@ -229,7 +225,7 @@
         <div class="bg-gradient-to-r from-purple-900 to-slate-900 border border-purple-500/40 rounded-3xl p-6 sm:p-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div>
                 <span class="px-3 py-1 rounded-full bg-purple-500/20 text-purple-300 border border-purple-500/30 text-xs font-bold">ADMIN CONTROL PANEL</span>
-                <h2 class="text-2xl font-bold text-white mt-2">ระบบจัดการหลังบ้านแอดมิน</h2>
+                <h2 class="text-2xl font-bold text-white mt-2">ระบบจัดการหลังบ้านแอดมิน (Real-time Sync)</h2>
             </div>
             <button onclick="switchMainView('client')" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs rounded-xl border border-slate-700">
                 <i class="fa-solid fa-arrow-left mr-1"></i> กลับหน้าเว็บหลัก
@@ -239,31 +235,35 @@
         <div class="flex items-center gap-2 border-b border-slate-800 pb-3 overflow-x-auto">
             <button onclick="switchAdminTab('builder')" id="admin-tab-builder" class="px-4 py-2 rounded-xl font-bold text-xs bg-purple-600 text-white transition whitespace-nowrap">ปรับแต่งเว็บ</button>
             <button onclick="switchAdminTab('gacha')" id="admin-tab-gacha" class="px-4 py-2 rounded-xl font-bold text-xs text-slate-400 hover:text-white transition whitespace-nowrap">จัดการวงล้อกาชา & เรท %</button>
-            <button onclick="switchAdminTab('users')" id="admin-tab-users" class="px-4 py-2 rounded-xl font-bold text-xs text-slate-400 hover:text-white transition whitespace-nowrap">จัดการสมาชิก & เปลี่ยนรหัสผ่าน</button>
-            <button onclick="switchAdminTab('shop')" id="admin-tab-shop" class="px-4 py-2 rounded-xl font-bold text-xs text-slate-400 hover:text-white transition whitespace-nowrap">จัดการสินค้า</button>
+            <button onclick="switchAdminTab('users')" id="admin-tab-users" class="px-4 py-2 rounded-xl font-bold text-xs text-slate-400 hover:text-white transition whitespace-nowrap">จัดการสมาชิก & เติมเครดิต</button>
+            <button onclick="switchAdminTab('music')" id="admin-tab-music" class="px-4 py-2 rounded-xl font-bold text-xs text-slate-400 hover:text-white transition whitespace-nowrap">จัดการเพลง YouTube</button>
         </div>
 
         <!-- ADMIN TAB 1: BUILDER -->
         <div id="admin-sec-builder" class="bg-slate-900 border border-slate-800 rounded-3xl p-6 space-y-4">
-            <h3 class="text-lg font-bold text-white border-b border-slate-800 pb-3">ตั้งค่าหน้าเว็บ</h3>
+            <h3 class="text-lg font-bold text-white border-b border-slate-800 pb-3">ตั้งค่าหน้าเว็บ (รองรับลิงก์ Discord CDN)</h3>
             <form onsubmit="handleSaveWebSettings(event)" class="space-y-4 max-w-xl">
                 <div>
                     <label class="text-xs text-slate-400 block mb-1">ชื่อเว็บไซต์</label>
-                    <input type="text" id="setting-brand-name" value="IJERDID SHOP" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-2 text-sm text-white">
+                    <input type="text" id="setting-brand-name" value="IJERDID PLATFORM" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-2 text-sm text-white">
                 </div>
                 <div>
                     <label class="text-xs text-slate-400 block mb-1">คำโปรย</label>
-                    <input type="text" id="setting-brand-tagline" value="FREEFIRE & CASINO PLATFORM" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-2 text-sm text-white">
+                    <input type="text" id="setting-brand-tagline" value="GACHA & CASINO PLATFORM" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-2 text-sm text-white">
                 </div>
                 <div>
                     <label class="text-xs text-slate-400 block mb-1">ข้อความประกาศ</label>
-                    <input type="text" id="setting-announcement" value="ยินดีต้อนรับสู่ระบบเว็บสุ่มไอเทม FreeFire และคาสิโนบาคาร่าออนไลน์ สมัครสมาชิกรับเครดิตฟรีเริ่มต้น!" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-2 text-sm text-white">
+                    <input type="text" id="setting-announcement" value="ยินดีต้อนรับสู่ระบบเว็บสุ่มรางวัลและคาสิโนบาคาร่าออนไลน์ สมัครสมาชิกรับเครดิตฟรีเริ่มต้น!" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-2 text-sm text-white">
+                </div>
+                <div>
+                    <label class="text-xs text-slate-400 block mb-1">ลิงก์รูปภาพแบนเนอร์หลัก (รองรับ Discord CDN)</label>
+                    <input type="url" id="setting-banner-img" value="https://images.unsplash.com/photo-1542751371-adc38448a05e?w=1000&auto=format&fit=crop&q=80" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-2 text-sm text-white">
                 </div>
                 <button type="submit" class="px-5 py-2.5 bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs rounded-xl">บันทึกการตั้งค่า</button>
             </form>
         </div>
 
-        <!-- ADMIN TAB 2: GACHA & RATES -->
+        <!-- ADMIN TAB 2: GACHA & RATES (%) -->
         <div id="admin-sec-gacha" class="hidden bg-slate-900 border border-slate-800 rounded-3xl p-6 space-y-6">
             <h3 class="text-lg font-bold text-white border-b border-slate-800 pb-3">จัดการรายการและเรทเปอร์เซ็นต์ (%) กาชา</h3>
             
@@ -287,7 +287,7 @@
                     <input type="number" id="gacha-points-input" required placeholder="500" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white">
                 </div>
                 <div>
-                    <label class="text-xs text-slate-400 block mb-1">โอกาสออก (%)</label>
+                    <label class="text-xs text-slate-400 block mb-1">เรทออก (%)</label>
                     <input type="number" id="gacha-rate-input" required min="1" max="100" placeholder="10" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white">
                 </div>
                 <div>
@@ -313,9 +313,9 @@
             </div>
         </div>
 
-        <!-- ADMIN TAB 3: USERS & PASSWORD RESET -->
+        <!-- ADMIN TAB 3: USERS & ADMIN TOPUP ONLY -->
         <div id="admin-sec-users" class="hidden bg-slate-900 border border-slate-800 rounded-3xl p-6 space-y-6">
-            <h3 class="text-lg font-bold text-white border-b border-slate-800 pb-3">จัดการรายชื่อสมาชิกและรหัสผ่าน</h3>
+            <h3 class="text-lg font-bold text-white border-b border-slate-800 pb-3">จัดการรายชื่อสมาชิก & เติมเครดิต (โดยแอดมินเท่านั้น)</h3>
             <div class="overflow-x-auto">
                 <table class="w-full text-left text-sm text-slate-400">
                     <thead class="bg-slate-800 text-slate-300 text-xs">
@@ -323,7 +323,7 @@
                             <th class="p-3">Username</th>
                             <th class="p-3">Role</th>
                             <th class="p-3">Points เครดิต</th>
-                            <th class="p-3 text-right">จัดการพาสเวิร์ด / เครดิต</th>
+                            <th class="p-3 text-right">จัดการพาสเวิร์ด / เติมเครดิต</th>
                         </tr>
                     </thead>
                     <tbody id="admin-users-list" class="divide-y divide-slate-800"></tbody>
@@ -331,22 +331,31 @@
             </div>
         </div>
 
-        <!-- ADMIN TAB 4: SHOP -->
-        <div id="admin-sec-shop" class="hidden bg-slate-900 border border-slate-800 rounded-3xl p-6 space-y-6">
-            <div class="flex justify-between items-center border-b border-slate-800 pb-3">
-                <h3 class="text-lg font-bold text-white">จัดการสินค้า</h3>
-                <button onclick="handleAdminAddProduct()" class="px-4 py-2 bg-cyan-500 text-slate-950 font-bold rounded-xl text-xs">+ เพิ่มสินค้า</button>
-            </div>
+        <!-- ADMIN TAB 4: YOUTUBE MUSIC MANAGER -->
+        <div id="admin-sec-music" class="hidden bg-slate-900 border border-slate-800 rounded-3xl p-6 space-y-6">
+            <h3 class="text-lg font-bold text-white border-b border-slate-800 pb-3">จัดการเพลง YouTube ประจำเว็บ</h3>
+            <form onsubmit="handleAddMusic(event)" class="grid grid-cols-1 sm:grid-cols-3 gap-3 bg-slate-950 p-4 rounded-2xl border border-slate-800 items-end">
+                <div>
+                    <label class="text-xs text-slate-400 block mb-1">ชื่อเพลง</label>
+                    <input type="text" id="music-title-input" required placeholder="เช่น EDM Cyberpunk" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white">
+                </div>
+                <div>
+                    <label class="text-xs text-slate-400 block mb-1">ลิงก์ YouTube (เช่น youtu.be/xxx)</label>
+                    <input type="text" id="music-url-input" required placeholder="https://youtu.be/xxxxx" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white">
+                </div>
+                <button type="submit" class="bg-purple-600 text-white font-bold rounded-xl text-xs py-2.5 hover:bg-purple-500">เพิ่มเพลงใหม่</button>
+            </form>
+
             <div class="overflow-x-auto">
                 <table class="w-full text-left text-sm text-slate-400">
                     <thead class="bg-slate-800 text-slate-300 text-xs">
                         <tr>
-                            <th class="p-3">สินค้า</th>
-                            <th class="p-3">ราคา (P)</th>
+                            <th class="p-3">ชื่อเพลง</th>
+                            <th class="p-3">YouTube ID / Link</th>
                             <th class="p-3 text-right">จัดการ</th>
                         </tr>
                     </thead>
-                    <tbody id="admin-products-list" class="divide-y divide-slate-800"></tbody>
+                    <tbody id="admin-music-list" class="divide-y divide-slate-800"></tbody>
                 </table>
             </div>
         </div>
@@ -432,6 +441,9 @@
         <p>© 2026 IJERDID Gaming & Casino Platform. All rights reserved.</p>
     </footer>
 
+    <!-- YouTube IFrame API Script -->
+    <script src="https://www.youtube.com/iframe_api"></script>
+
     <!-- JS SCRIPT LOGIC -->
     <script>
         // Database Initialization
@@ -453,77 +465,177 @@
         if(!localStorage.getItem('gachaPrice')) {
             localStorage.setItem('gachaPrice', '50');
         }
-        if(!localStorage.getItem('products')) {
-            localStorage.setItem('products', JSON.stringify([
-                { id: 1, title: 'ไอดี Freefire ติดสกินปืน EVO', price: 350, image: 'https://images.unsplash.com/photo-1538481199705-c710c4e965fc?w=400&auto=format&fit=crop&q=80' },
-                { id: 2, title: 'โค้ดเพชร Freefire 1,000 Diamonds', price: 150, image: 'https://images.unsplash.com/photo-1563089145-599997674d42?w=400&auto=format&fit=crop&q=80' }
+        if(!localStorage.getItem('playlist')) {
+            localStorage.setItem('playlist', JSON.stringify([
+                { id: 1, title: 'EDM Cyberpunk Beats', url: 'https://youtu.be/36YnV9STBqc' },
+                { id: 2, title: 'Gaming Lounge Music', url: 'https://youtu.be/5qap5aO4i9A' }
             ]));
+        }
+        if(!localStorage.getItem('webSettings')) {
+            localStorage.setItem('webSettings', JSON.stringify({
+                name: 'IJERDID PLATFORM',
+                tagline: 'GACHA & CASINO PLATFORM',
+                announcement: 'ยินดีต้อนรับสู่ระบบเว็บสุ่มรางวัลและคาสิโนบาคาร่าออนไลน์ สมัครสมาชิกรับเครดิตฟรีเริ่มต้น!',
+                bannerImg: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=1000&auto=format&fit=crop&q=80',
+                bannerTitle: 'วงล้อกาชาปอง UR & มินิเกมบาคาร่าสุดมันส์'
+            }));
         }
 
         let currentUser = JSON.parse(localStorage.getItem('currentUser')) || null;
         let gachaItems = JSON.parse(localStorage.getItem('gachaItems'));
         let gachaPrice = parseInt(localStorage.getItem('gachaPrice') || '50');
-        let products = JSON.parse(localStorage.getItem('products'));
+        let playlist = JSON.parse(localStorage.getItem('playlist'));
+        let webSettings = JSON.parse(localStorage.getItem('webSettings'));
         let isSpinning = false;
         let currentAngle = 0;
 
-        // PLAYLIST SETTINGS (สามารถเพิ่มเพลงตรงนี้ได้)
-        let playlist = [
-            { id: 1, title: 'EDM Cyberpunk Beats', url: 'https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8c8a7321d.mp3' },
-            { id: 2, title: 'Gaming Lounge Music', url: 'https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3' }
-        ];
         let currentSongIndex = 0;
         let isPlaying = false;
-        const audio = document.getElementById('bg-audio');
+        let ytPlayer = null;
 
         window.onload = function() {
+            applyWebSettings();
+            syncCurrentUserState();
             updateNavbarAuth();
-            loadSong(0);
-            renderProducts();
             renderAdminGachaList();
             renderAdminUsersList();
-            renderAdminProductsList();
+            renderAdminMusicList();
             drawWheel();
         };
 
-        // MUSIC CONTROL LOGIC
-        function loadSong(i) {
-            currentSongIndex = i;
-            audio.src = playlist[i].url;
-            document.getElementById('current-song-title').innerText = playlist[i].title;
+        // Real-time synchronization across browser tabs and user screens
+        window.addEventListener('storage', function(e) {
+            if(e.key === 'users') {
+                let users = JSON.parse(localStorage.getItem('users') || '[]');
+                if(currentUser) {
+                    let updatedMe = users.find(x => x.username === currentUser.username);
+                    if(updatedMe) {
+                        currentUser = updatedMe;
+                        localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                        updateNavbarAuth();
+                    }
+                }
+                renderAdminUsersList();
+            }
+            if(e.key === 'gachaItems') {
+                gachaItems = JSON.parse(e.newValue || '[]');
+                renderAdminGachaList();
+            }
+            if(e.key === 'gachaPrice') {
+                gachaPrice = parseInt(e.newValue || '50');
+                document.getElementById('gacha-cost-display').innerText = gachaPrice;
+                document.getElementById('btn-gacha-price').innerText = gachaPrice;
+            }
+            if(e.key === 'playlist') {
+                playlist = JSON.parse(e.newValue || '[]');
+                renderAdminMusicList();
+                if(playlist.length > 0 && currentSongIndex >= playlist.length) currentSongIndex = 0;
+                if(ytPlayer && playlist.length > 0) {
+                    ytPlayer.loadVideoById(extractYouTubeId(playlist[currentSongIndex].url));
+                    document.getElementById('current-song-title').innerText = playlist[currentSongIndex].title;
+                }
+            }
+            if(e.key === 'webSettings') {
+                webSettings = JSON.parse(e.newValue || '{}');
+                applyWebSettings();
+            }
+        });
+
+        function applyWebSettings() {
+            document.getElementById('brand-name').innerText = webSettings.name || 'IJERDID PLATFORM';
+            document.getElementById('brand-tagline').innerText = webSettings.tagline || 'GACHA & CASINO';
+            document.getElementById('client-announcement').innerText = webSettings.announcement || '';
+            document.getElementById('hero-banner-img').src = webSettings.bannerImg || '';
+            document.getElementById('hero-banner-title').innerText = webSettings.bannerTitle || '';
+            
+            // Sync admin form values
+            if(document.getElementById('setting-brand-name')) {
+                document.getElementById('setting-brand-name').value = webSettings.name || '';
+                document.getElementById('setting-brand-tagline').value = webSettings.tagline || '';
+                document.getElementById('setting-announcement').value = webSettings.announcement || '';
+                document.getElementById('setting-banner-img').value = webSettings.bannerImg || '';
+            }
+        }
+
+        function syncCurrentUserState() {
+            if(!currentUser) return;
+            let users = JSON.parse(localStorage.getItem('users') || '[]');
+            let found = users.find(x => x.username === currentUser.username);
+            if(found) {
+                currentUser = found;
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            }
+        }
+
+        // YOUTUBE API PLAYER SETUP
+        function onYouTubeIframeAPIReady() {
+            if(playlist.length === 0) return;
+            let ytId = extractYouTubeId(playlist[0].url);
+            document.getElementById('current-song-title').innerText = playlist[0].title;
+            
+            ytPlayer = new YT.Player('youtube-player-container', {
+                height: '0',
+                width: '0',
+                videoId: ytId,
+                playerVars: { 'autoplay': 0, 'controls': 0 },
+                events: {
+                    'onStateChange': onPlayerStateChange
+                }
+            });
+        }
+
+        function extractYouTubeId(url) {
+            let regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+            let match = url.match(regExp);
+            return (match && match[2].length === 11) ? match[2] : '36YnV9STBqc';
+        }
+
+        function onPlayerStateChange(event) {
+            if (event.data === YT.PlayerState.ENDED) {
+                nextSong();
+            }
         }
 
         function toggleMusicPlay() {
+            if(!playlist || playlist.length === 0) return showToast('ยังไม่มีเพลงในระบบ', 'warning');
+            if(!ytPlayer) return showToast('เครื่องเล่นเพลงกำลังโหลด กรุณาลองใหม่อีกครั้ง', 'warning');
+
             if (isPlaying) {
-                audio.pause();
+                ytPlayer.pauseVideo();
                 isPlaying = false;
                 document.getElementById('music-status-text').innerText = 'เปิดเพลง';
                 document.getElementById('current-song-status').innerText = 'หยุดเล่นแล้ว';
                 document.getElementById('btn-play-pause').innerHTML = '<i class="fa-solid fa-play text-lg"></i>';
                 document.getElementById('music-disc-icon').classList.remove('animate-spin');
             } else {
-                audio.play().then(() => {
-                    isPlaying = true;
-                    document.getElementById('music-status-text').innerText = 'หยุดเพลง';
-                    document.getElementById('current-song-status').innerText = 'กำลังเล่นเพลง...';
-                    document.getElementById('btn-play-pause').innerHTML = '<i class="fa-solid fa-pause text-lg"></i>';
-                    document.getElementById('music-disc-icon').classList.add('animate-spin');
-                }).catch(() => {
-                    showToast('คลิกบนหน้าเว็บก่อนเพื่อเล่นเพลง', 'warning');
-                });
+                ytPlayer.playVideo();
+                isPlaying = true;
+                document.getElementById('music-status-text').innerText = 'หยุดเพลง';
+                document.getElementById('current-song-status').innerText = 'กำลังเล่นเพลง...';
+                document.getElementById('btn-play-pause').innerHTML = '<i class="fa-solid fa-pause text-lg"></i>';
+                document.getElementById('music-disc-icon').classList.add('animate-spin');
             }
         }
 
         function prevSong() {
+            if(!playlist || playlist.length === 0) return;
             currentSongIndex = (currentSongIndex - 1 + playlist.length) % playlist.length;
-            loadSong(currentSongIndex);
-            if (isPlaying) audio.play();
+            playCurrentSongIndex();
         }
 
         function nextSong() {
+            if(!playlist || playlist.length === 0) return;
             currentSongIndex = (currentSongIndex + 1) % playlist.length;
-            loadSong(currentSongIndex);
-            if (isPlaying) audio.play();
+            playCurrentSongIndex();
+        }
+
+        function playCurrentSongIndex() {
+            let song = playlist[currentSongIndex];
+            document.getElementById('current-song-title').innerText = song.title;
+            if(ytPlayer) {
+                ytPlayer.loadVideoById(extractYouTubeId(song.url));
+                if(isPlaying) ytPlayer.playVideo();
+            }
         }
 
         function updateNavbarAuth() {
@@ -570,11 +682,11 @@
             }
             document.getElementById('view-client').classList.toggle('hidden', view !== 'client');
             document.getElementById('view-admin').classList.toggle('hidden', view !== 'admin');
-            if (view === 'client') switchClientTab('shop');
+            if (view === 'client') switchClientTab('gacha');
         }
 
         function switchClientTab(tab) {
-            ['shop', 'gacha', 'baccarat'].forEach(t => {
+            ['gacha', 'baccarat'].forEach(t => {
                 document.getElementById(`client-sec-${t}`).classList.add('hidden');
                 document.getElementById(`client-tab-${t}`).className = "px-5 py-2.5 rounded-xl font-bold text-sm text-slate-400 hover:text-white transition whitespace-nowrap";
             });
@@ -584,7 +696,7 @@
         }
 
         function switchAdminTab(tab) {
-            ['builder', 'gacha', 'users', 'shop'].forEach(t => {
+            ['builder', 'gacha', 'users', 'music'].forEach(t => {
                 document.getElementById(`admin-sec-${t}`).classList.add('hidden');
                 document.getElementById(`admin-tab-${t}`).className = "px-4 py-2 rounded-xl font-bold text-xs text-slate-400 hover:text-white transition whitespace-nowrap";
             });
@@ -694,7 +806,7 @@
                 ctx.textAlign = "right";
                 ctx.fillStyle = "#ffffff";
                 ctx.font = "bold 11px Prompt";
-                ctx.fillText(item.label, radius - 15, 4);
+                ctx.fillText(item.label + ` (${item.rate}%)`, radius - 15, 4);
                 ctx.restore();
 
                 startAngle = endAngle;
@@ -830,6 +942,7 @@
 
         function renderAdminGachaList() {
             let list = document.getElementById('admin-gacha-list');
+            if(!list) return;
             list.innerHTML = '';
             gachaItems.forEach(g => {
                 list.innerHTML += `
@@ -837,7 +950,7 @@
                         <td class="p-3"><div class="w-5 h-5 rounded-full" style="background:${g.color}"></div></td>
                         <td class="p-3 font-semibold text-white">${g.label}</td>
                         <td class="p-3 text-amber-400 font-mono">${g.points} P</td>
-                        <td class="p-3 font-mono">${g.rate}%</td>
+                        <td class="p-3 font-mono text-cyan-400">${g.rate}%</td>
                         <td class="p-3 text-right"><button onclick="deleteGacha(${g.id})" class="text-xs text-rose-400 hover:underline">ลบ</button></td>
                     </tr>
                 `;
@@ -868,8 +981,9 @@
         }
 
         function renderAdminUsersList() {
-            let users = JSON.parse(localStorage.getItem('users'));
+            let users = JSON.parse(localStorage.getItem('users') || '[]');
             let list = document.getElementById('admin-users-list');
+            if(!list) return;
             list.innerHTML = '';
             users.forEach(u => {
                 list.innerHTML += `
@@ -878,11 +992,26 @@
                         <td class="p-3 text-purple-400">${u.role}</td>
                         <td class="p-3 text-amber-400 font-mono">${u.credit} P</td>
                         <td class="p-3 text-right space-x-2">
+                            <button onclick="adminTopUp('${u.username}')" class="px-3 py-1 bg-emerald-600 hover:bg-emerald-500 text-white text-xs rounded-lg">เติมเครดิต</button>
                             <button onclick="adminResetPass('${u.username}')" class="px-3 py-1 bg-slate-800 hover:bg-slate-700 text-cyan-400 text-xs rounded-lg">เปลี่ยนรหัสผ่าน</button>
                         </td>
                     </tr>
                 `;
             });
+        }
+
+        function adminTopUp(uname) {
+            let amount = parseInt(prompt(`ระบุจำนวน Points ที่ต้องการเติมให้ ${uname}:`));
+            if (!isNaN(amount) && amount !== 0) {
+                let users = JSON.parse(localStorage.getItem('users'));
+                let u = users.find(x => x.username === uname);
+                if (u) {
+                    u.credit += amount;
+                    localStorage.setItem('users', JSON.stringify(users));
+                    showToast(`เติมเครดิตให้ ${uname} สำเร็จ (+${amount} P)`, 'success');
+                    renderAdminUsersList();
+                }
+            }
         }
 
         function adminResetPass(uname) {
@@ -899,73 +1028,53 @@
             }
         }
 
-        function renderProducts() {
-            let grid = document.getElementById('client-sec-shop');
-            grid.innerHTML = '';
-            products.forEach(p => {
-                grid.innerHTML += `
-                    <div class="bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden">
-                        <img src="${p.image}" class="w-full h-44 object-cover">
-                        <div class="p-5">
-                            <h4 class="font-bold text-white text-base">${p.title}</h4>
-                            <div class="flex items-center justify-between mt-4">
-                                <span class="text-amber-400 font-mono font-bold text-lg">${p.price} P</span>
-                                <button onclick="buyProduct(${p.price})" class="px-4 py-2 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-xs rounded-xl">สั่งซื้อ</button>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            });
-        }
-
-        function renderAdminProductsList() {
-            let list = document.getElementById('admin-products-list');
+        // MUSIC ADMIN MANAGEMENT
+        function renderAdminMusicList() {
+            let list = document.getElementById('admin-music-list');
+            if(!list) return;
             list.innerHTML = '';
-            products.forEach(p => {
+            playlist.forEach((song) => {
                 list.innerHTML += `
                     <tr>
-                        <td class="p-3 font-semibold text-white">${p.title}</td>
-                        <td class="p-3 text-amber-400 font-mono">${p.price} P</td>
-                        <td class="p-3 text-right"><button onclick="deleteProduct(${p.id})" class="text-xs text-rose-400">ลบ</button></td>
+                        <td class="p-3 font-semibold text-white">${song.title}</td>
+                        <td class="p-3 text-cyan-400 truncate max-w-xs font-mono text-xs">${song.url}</td>
+                        <td class="p-3 text-right"><button onclick="deleteMusic(${song.id})" class="text-xs text-rose-400 hover:underline">ลบ</button></td>
                     </tr>
                 `;
             });
         }
 
-        function buyProduct(price) {
-            if (!currentUser) return openAuthModal('login');
-            if (currentUser.credit < price) return showToast('Points ไม่พอซื้อสินค้า', 'warning');
-            currentUser.credit -= price;
-            updateUserCreditInStorage();
-            updateNavbarAuth();
-            showToast('ซื้อสินค้าสำเร็จ!', 'success');
-        }
-
-        function handleAdminAddProduct() {
-            let t = prompt('ชื่อสินค้า:');
-            let p = parseInt(prompt('ราคา Points:'));
-            if (t && p) {
-                products.push({ id: Date.now(), title: t, price: p, image: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=400&auto=format&fit=crop&q=80' });
-                localStorage.setItem('products', JSON.stringify(products));
-                renderProducts();
-                renderAdminProductsList();
-                showToast('เพิ่มสินค้าสำเร็จ', 'success');
+        function handleAddMusic(e) {
+            e.preventDefault();
+            const title = document.getElementById('music-title-input').value.trim();
+            const url = document.getElementById('music-url-input').value.trim();
+            if(title && url) {
+                playlist.push({ id: Date.now(), title, url });
+                localStorage.setItem('playlist', JSON.stringify(playlist));
+                renderAdminMusicList();
+                e.target.reset();
+                showToast('เพิ่มเพลงใหม่สำเร็จ', 'success');
             }
         }
 
-        function deleteProduct(id) {
-            products = products.filter(x => x.id !== id);
-            localStorage.setItem('products', JSON.stringify(products));
-            renderProducts();
-            renderAdminProductsList();
-            showToast('ลบสินค้าสำเร็จ', 'info');
+        function deleteMusic(id) {
+            playlist = playlist.filter(x => x.id !== id);
+            localStorage.setItem('playlist', JSON.stringify(playlist));
+            renderAdminMusicList();
+            showToast('ลบเพลงสำเร็จ', 'info');
         }
 
         function handleSaveWebSettings(e) {
             e.preventDefault();
-            document.getElementById('brand-name').innerText = document.getElementById('setting-brand-name').value;
-            document.getElementById('brand-tagline').innerText = document.getElementById('setting-brand-tagline').value;
-            document.getElementById('client-announcement').innerText = document.getElementById('setting-announcement').value;
+            webSettings = {
+                name: document.getElementById('setting-brand-name').value,
+                tagline: document.getElementById('setting-brand-tagline').value,
+                announcement: document.getElementById('setting-announcement').value,
+                bannerImg: document.getElementById('setting-banner-img').value,
+                bannerTitle: 'วงล้อกาชาปอง UR & มินิเกมบาคาร่าสุดมันส์'
+            };
+            localStorage.setItem('webSettings', JSON.stringify(webSettings));
+            applyWebSettings();
             showToast('บันทึกการตั้งค่าเว็บเรียบร้อย', 'success');
         }
 
