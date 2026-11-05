@@ -235,7 +235,7 @@
         <div class="flex items-center gap-2 border-b border-slate-800 pb-3 overflow-x-auto">
             <button onclick="switchAdminTab('builder')" id="admin-tab-builder" class="px-4 py-2 rounded-xl font-bold text-xs bg-purple-600 text-white transition whitespace-nowrap">ปรับแต่งเว็บ</button>
             <button onclick="switchAdminTab('gacha')" id="admin-tab-gacha" class="px-4 py-2 rounded-xl font-bold text-xs text-slate-400 hover:text-white transition whitespace-nowrap">จัดการวงล้อกาชา & เรท %</button>
-            <button onclick="switchAdminTab('users')" id="admin-tab-users" class="px-4 py-2 rounded-xl font-bold text-xs text-slate-400 hover:text-white transition whitespace-nowrap">จัดการสมาชิก & เติมเครดิต</button>
+            <button onclick="switchAdminTab('users')" id="admin-tab-users" class="px-4 py-2 rounded-xl font-bold text-xs text-slate-400 hover:text-white transition whitespace-nowrap">จัดการสมาชิก & เติม/หักเครดิต</button>
             <button onclick="switchAdminTab('music')" id="admin-tab-music" class="px-4 py-2 rounded-xl font-bold text-xs text-slate-400 hover:text-white transition whitespace-nowrap">จัดการเพลง YouTube</button>
         </div>
 
@@ -313,9 +313,9 @@
             </div>
         </div>
 
-        <!-- ADMIN TAB 3: USERS & ADMIN TOPUP ONLY -->
+        <!-- ADMIN TAB 3: USERS & ADMIN TOPUP/DEDUCT CREDIT -->
         <div id="admin-sec-users" class="hidden bg-slate-900 border border-slate-800 rounded-3xl p-6 space-y-6">
-            <h3 class="text-lg font-bold text-white border-b border-slate-800 pb-3">จัดการรายชื่อสมาชิก & เติมเครดิต (โดยแอดมินเท่านั้น)</h3>
+            <h3 class="text-lg font-bold text-white border-b border-slate-800 pb-3">จัดการรายชื่อสมาชิก & เติมหรือหักเครดิต (โดยแอดมินเท่านั้น)</h3>
             <div class="overflow-x-auto">
                 <table class="w-full text-left text-sm text-slate-400">
                     <thead class="bg-slate-800 text-slate-300 text-xs">
@@ -323,7 +323,7 @@
                             <th class="p-3">Username</th>
                             <th class="p-3">Role</th>
                             <th class="p-3">Points เครดิต</th>
-                            <th class="p-3 text-right">จัดการพาสเวิร์ด / เติมเครดิต</th>
+                            <th class="p-3 text-right">จัดการพาสเวิร์ด / เติมเงิน / ลบเครดิต</th>
                         </tr>
                     </thead>
                     <tbody id="admin-users-list" class="divide-y divide-slate-800"></tbody>
@@ -548,7 +548,6 @@
             document.getElementById('hero-banner-img').src = webSettings.bannerImg || '';
             document.getElementById('hero-banner-title').innerText = webSettings.bannerTitle || '';
             
-            // Sync admin form values
             if(document.getElementById('setting-brand-name')) {
                 document.getElementById('setting-brand-name').value = webSettings.name || '';
                 document.getElementById('setting-brand-tagline').value = webSettings.tagline || '';
@@ -993,7 +992,8 @@
                         <td class="p-3 text-amber-400 font-mono">${u.credit} P</td>
                         <td class="p-3 text-right space-x-2">
                             <button onclick="adminTopUp('${u.username}')" class="px-3 py-1 bg-emerald-600 hover:bg-emerald-500 text-white text-xs rounded-lg">เติมเครดิต</button>
-                            <button onclick="adminResetPass('${u.username}')" class="px-3 py-1 bg-slate-800 hover:bg-slate-700 text-cyan-400 text-xs rounded-lg">เปลี่ยนรหัสผ่าน</button>
+                            <button onclick="adminDeduct('${u.username}')" class="px-3 py-1 bg-amber-600 hover:bg-amber-500 text-white text-xs rounded-lg">หักเครดิต</button>
+                            <button onclick="adminResetPass('${u.username}')" class="px-3 py-1 bg-slate-800 hover:bg-slate-700 text-cyan-400 text-xs rounded-lg">เปลี่ยนรหัส</button>
                         </td>
                     </tr>
                 `;
@@ -1002,13 +1002,27 @@
 
         function adminTopUp(uname) {
             let amount = parseInt(prompt(`ระบุจำนวน Points ที่ต้องการเติมให้ ${uname}:`));
-            if (!isNaN(amount) && amount !== 0) {
+            if (!isNaN(amount) && amount > 0) {
                 let users = JSON.parse(localStorage.getItem('users'));
                 let u = users.find(x => x.username === uname);
                 if (u) {
                     u.credit += amount;
                     localStorage.setItem('users', JSON.stringify(users));
                     showToast(`เติมเครดิตให้ ${uname} สำเร็จ (+${amount} P)`, 'success');
+                    renderAdminUsersList();
+                }
+            }
+        }
+
+        function adminDeduct(uname) {
+            let amount = parseInt(prompt(`ระบุจำนวน Points ที่ต้องการหักออกจาก ${uname}:`));
+            if (!isNaN(amount) && amount > 0) {
+                let users = JSON.parse(localStorage.getItem('users'));
+                let u = users.find(x => x.username === uname);
+                if (u) {
+                    u.credit = Math.max(0, u.credit - amount);
+                    localStorage.setItem('users', JSON.stringify(users));
+                    showToast(`หักเครดิตจาก ${uname} สำเร็จ (-${amount} P)`, 'warning');
                     renderAdminUsersList();
                 }
             }
